@@ -92,16 +92,39 @@ su -c start adbd
 
 ### v2.0 (Planned)
 - [ ] QR code for quick connection
-- [ ] Shizuku support (non-root option)
 - [ ] Connection history
+- [ ] Shizuku support (non-root option using internal ADB mechanism)
 
-### v3.0 (Research)
-- [ ] **Remote ADB over Internet** - Secure tunnel for remote device access
-  - SSH tunnel integration
-  - Custom relay server support
-  - End-to-end encryption
-  - Authentication (password/key-based)
-  - Web dashboard for connection management
+### v3.0 (Research - Remote ADB)
+
+**Goal:** Remote ADB access over the internet with device sharing
+
+**Research completed:**
+- [x] Shizuku architecture analysis (uses `libadb.so` + JDWP - overkill for root)
+- [x] Dual port investigation (5555 legacy vs 41849+ Wireless Debugging)
+- [x] Tunneling solutions comparison
+
+**Recommended solution: [Tailscale](https://tailscale.com)**
+- Free for personal use (3 users, 100 devices)
+- Native Android app (Play Store, F-Droid)
+- WireGuard encryption built-in
+- Easy sharing with trusted users
+- Works perfectly: `adb connect <tailscale-ip>:5555`
+
+**Alternatives evaluated:**
+| Solution | Free Tier | TCP Support | Best For |
+|----------|-----------|-------------|----------|
+| Tailscale | 3 users | Full | Personal + sharing |
+| Warpgate | Self-hosted | Full | Team access + audit |
+| Cloudflare | Yes (needs domain) | Via WARP | HTTP services |
+| ZeroTier | 25 devices | Full | Larger deployments |
+| frp | Self-hosted | Full | Full control |
+
+**Implementation ideas:**
+- [ ] Auto-detect Tailscale and show Tailscale IP
+- [ ] "Remote Access Ready" status indicator
+- [ ] QR code with Tailscale IP for easy sharing
+- [ ] One-tap Tailscale setup guide
 
 ## License
 

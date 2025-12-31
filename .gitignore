@@ -15,5 +15,5 @@ local.properties
 *.iml
 .DS_Store
 
-# Reference (original app)
-reference/
+# Research (local notes, not for repo)
+research/
