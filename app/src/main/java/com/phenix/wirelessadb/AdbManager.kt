@@ -1,12 +1,16 @@
 package com.phenix.wirelessadb
 
 import android.content.Context
-import android.net.wifi.WifiManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
+import java.net.Inet4Address
+import java.net.NetworkInterface
 
 object AdbManager {
 
@@ -73,17 +77,19 @@ object AdbManager {
   }
 
   private fun getWifiIp(context: Context): String? {
-    val wifiManager = context.applicationContext
-      .getSystemService(Context.WIFI_SERVICE) as? WifiManager ?: return null
-    val ip = wifiManager.connectionInfo.ipAddress
-    if (ip == 0) return null
-    return String.format(
-      "%d.%d.%d.%d",
-      ip and 0xff,
-      ip shr 8 and 0xff,
-      ip shr 16 and 0xff,
-      ip shr 24 and 0xff
-    )
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+      ?: return null
+    val network = cm.activeNetwork ?: return null
+    val caps = cm.getNetworkCapabilities(network) ?: return null
+
+    if (!caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) return null
+
+    val linkProps = cm.getLinkProperties(network) ?: return null
+    return linkProps.linkAddresses
+      .map { it.address }
+      .filterIsInstance<Inet4Address>()
+      .firstOrNull()
+      ?.hostAddress
   }
 
   private fun runRootCommand(vararg commands: String): Result<Unit> {

@@ -9,6 +9,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.phenix.wirelessadb.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -20,9 +24,12 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
+    setupEdgeToEdge()
     requestNotificationPermission()
     setupViews()
     checkRootAndRefresh()
@@ -31,6 +38,19 @@ class MainActivity : AppCompatActivity() {
   override fun onResume() {
     super.onResume()
     refreshStatus()
+  }
+
+  private fun setupEdgeToEdge() {
+    ViewCompat.setOnApplyWindowInsetsListener(binding.rootLayout) { view, windowInsets ->
+      val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+      view.updatePadding(
+        left = insets.left + 24,
+        top = insets.top + 24,
+        right = insets.right + 24,
+        bottom = insets.bottom + 24
+      )
+      windowInsets
+    }
   }
 
   private fun requestNotificationPermission() {
@@ -69,7 +89,8 @@ class MainActivity : AppCompatActivity() {
     lifecycleScope.launch {
       val hasRoot = AdbManager.isRootAvailable()
       if (!hasRoot) {
-        binding.statusText.text = "Root access required!"
+        binding.statusText.text = "Root access required"
+        binding.statusIndicator.setBackgroundResource(R.drawable.ic_status_inactive)
         binding.toggleButton.isEnabled = false
         Toast.makeText(this@MainActivity, "No root access", Toast.LENGTH_LONG).show()
       } else {
@@ -86,6 +107,7 @@ class MainActivity : AppCompatActivity() {
       binding.apply {
         if (status.enabled && status.ip != null) {
           statusText.text = "Connected"
+          statusIndicator.setBackgroundResource(R.drawable.ic_status_active)
           ipText.text = status.ip
           portText.text = ":${status.port}"
           commandText.text = "adb connect ${status.ip}:${status.port}"
@@ -93,6 +115,7 @@ class MainActivity : AppCompatActivity() {
           copyButton.isEnabled = true
         } else {
           statusText.text = "Disabled"
+          statusIndicator.setBackgroundResource(R.drawable.ic_status_inactive)
           ipText.text = "---.---.---.---"
           portText.text = ":${status.port}"
           commandText.text = "ADB not active"

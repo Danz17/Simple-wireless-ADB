@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="Theme.WirelessADB" parent="Theme.Material3.Light.NoActionBar">
+  <style name="Theme.WirelessADB" parent="Theme.Material3.Dark.NoActionBar">
     <item name="colorPrimary">@color/primary</item>
     <item name="colorPrimaryContainer">@color/primary_container</item>
     <item name="colorSecondary">@color/secondary</item>
@@ -19,6 +19,6 @@
     <item name="android:colorBackground">@color/background</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:navigationBarColor">@android:color/transparent</item>
-    <item name="android:windowLightStatusBar">true</item>
+    <item name="android:windowLightStatusBar">false</item>
   </style>
 </resources>

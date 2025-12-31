@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(cmd.exe /c \"gradlew.bat assembleDebug\")",
+      "Bash(cmd.exe //c \"gradlew.bat assembleDebug --no-daemon\")",
+      "Bash(chmod:*)",
+      "Bash(adb devices:*)",
+      "Bash(\"$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe\" devices)",
+      "Bash(\"$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe\" -s 10.1.1.107:5555 install -r \"D:/AI/Github/Android-Apps/apps/wirelessadb/app/build/outputs/apk/debug/app-debug.apk\")",
+      "Bash(\"$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe\" -s 10.1.1.107:5555 shell am start -n com.phenix.wirelessadb/.MainActivity)",
+      "Bash(\"$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe\" -s 10.1.1.107:5555 shell getprop service.adb.tcp.port)",
+      "Bash(\"$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe\" -s 10.1.1.107:5555 shell \"netstat -tlnp 2>/dev/null | grep 5555 || ss -tlnp 2>/dev/null | grep 5555\")",
+      "Bash(gh repo create:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

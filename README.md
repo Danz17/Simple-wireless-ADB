@@ -1,6 +1,8 @@
-# Wireless ADB
+# Simple Wireless ADB
 
-Lightweight Android app to enable wireless ADB debugging on rooted devices.
+**ROOT REQUIRED**
+
+Lightweight Android app to enable wireless ADB debugging on rooted devices. Clean, modern UI with dark mode support.
 
 ## Features
 
@@ -9,18 +11,52 @@ Lightweight Android app to enable wireless ADB debugging on rooted devices.
 - Auto-enable on boot
 - Copy `adb connect` command to clipboard
 - Persistent notification when active
-- **No ads, no analytics, no bloat** (~1MB vs 75MB original)
+- Status indicator (green = connected)
+- Dark mode support (follows system)
+- Edge-to-edge modern UI
+- **No ads, no analytics, no bloat** (~1MB)
+
+## Screenshots
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| Coming soon | Coming soon |
 
 ## Requirements
 
 - Android 8.0+ (API 26)
 - Root access (Magisk, KernelSU, etc.)
 
+## Installation
+
+1. Download the latest APK from [Releases](../../releases)
+2. Install on your rooted device
+3. Grant root permissions when prompted
+4. Tap "Enable" to start wireless ADB
+
+## Usage
+
+```bash
+# On your PC, connect to your device
+adb connect <DEVICE_IP>:5555
+
+# Example
+adb connect 192.168.1.100:5555
+```
+
 ## Build
 
-1. Open this folder in Android Studio
-2. Sync Gradle
-3. Build → Build APK
+```bash
+# Clone the repo
+git clone https://github.com/AlaQwe/Simple-wireless-ADB.git
+cd Simple-wireless-ADB
+
+# Build debug APK
+./gradlew assembleDebug
+
+# Build release APK
+./gradlew assembleRelease
+```
 
 ## Project Structure
 
@@ -43,10 +79,35 @@ su -c stop adbd
 su -c start adbd
 ```
 
-## Reference
+## Roadmap
 
-The `reference/` folder contains the decompiled original app (com.origiq.wirelessadb) for comparison.
+### v1.0 (Current)
+- [x] Enable/disable wireless ADB
+- [x] Custom port configuration
+- [x] Auto-enable on boot
+- [x] Copy command to clipboard
+- [x] Persistent notification
+- [x] Modern Material 3 UI
+- [x] Dark mode support
+
+### v2.0 (Planned)
+- [ ] QR code for quick connection
+- [ ] Shizuku support (non-root option)
+- [ ] Connection history
+
+### v3.0 (Research)
+- [ ] **Remote ADB over Internet** - Secure tunnel for remote device access
+  - SSH tunnel integration
+  - Custom relay server support
+  - End-to-end encryption
+  - Authentication (password/key-based)
+  - Web dashboard for connection management
+
+## License
+
+MIT License - See [LICENSE](LICENSE) for details.
 
 ## Author
 
-Phenix (com.phenix.wirelessadb)
+**Phenix** (Alaa Qweider)
+- Package: `com.phenix.wirelessadb`

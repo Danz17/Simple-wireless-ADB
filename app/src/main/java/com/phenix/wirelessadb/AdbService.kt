@@ -75,7 +75,7 @@ class AdbService : Service() {
     return NotificationCompat.Builder(this, CHANNEL_ID)
       .setContentTitle("Wireless ADB Active")
       .setContentText("adb connect $ip:$port")
-      .setSmallIcon(android.R.drawable.stat_sys_download_done)
+      .setSmallIcon(R.drawable.ic_notification)
       .setOngoing(true)
       .setContentIntent(pendingIntent)
       .build()
