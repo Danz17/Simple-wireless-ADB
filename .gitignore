@@ -17,3 +17,14 @@ local.properties
 
 # Research (local notes, not for repo)
 research/
+
+# Signing secrets (NEVER commit!)
+*.keystore
+*.jks
+.env
+
+# Screenshots and temp files
+screenshot*.png
+temp/
+nul
+.serena/

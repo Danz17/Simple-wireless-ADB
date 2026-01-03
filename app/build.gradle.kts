@@ -1,6 +1,17 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
+}
+
+// Load .env properties for signing
+val envFile = rootProject.file(".env")
+val envProps = Properties().apply {
+  if (envFile.exists()) {
+    load(FileInputStream(envFile))
+  }
 }
 
 android {
@@ -15,10 +26,20 @@ android {
     versionName = "1.2.0"
   }
 
+  signingConfigs {
+    create("release") {
+      storeFile = file(envProps.getProperty("KEYSTORE_FILE", "../rootadb.keystore"))
+      storePassword = envProps.getProperty("KEYSTORE_PASSWORD", "")
+      keyAlias = envProps.getProperty("KEY_ALIAS", "phenkey")
+      keyPassword = envProps.getProperty("KEY_PASSWORD", "")
+    }
+  }
+
   buildTypes {
     release {
       isMinifyEnabled = true
       isShrinkResources = true
+      signingConfig = signingConfigs.getByName("release")
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"

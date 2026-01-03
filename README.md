@@ -1,12 +1,20 @@
 # RootADB Pro
 
-**Persistent Wireless ADB with Remote Access**
+**Persistent Wireless ADB with Remote Access & P2P Connections**
 
-Lightweight Android utility for rooted devices that enables wireless ADB debugging with optional remote access via Tailscale. Clean Material 3 UI with dark mode support.
+A powerful Android utility that enables wireless ADB debugging with multiple remote access options including Tailscale VPN, Warpgate SSH tunnels, and P2P token-based connections. Features a modern Material 3 UI with theme customization.
 
-![RootADB Pro](screenshot.png)
+[![Release](https://img.shields.io/github/v/release/Danz17/Simple-wireless-ADB)](https://github.com/Danz17/Simple-wireless-ADB/releases)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Android](https://img.shields.io/badge/Android-8.0%2B-green.svg)](https://developer.android.com)
 
 ## Features
+
+### Dashboard (v1.2.0)
+- **Quick Status** - 4 status indicators (Local/Tailscale/Warpgate/P2P)
+- **Quick Toggles** - Enable Local ADB, Tailscale Relay, or Warpgate with one tap
+- **Settings** - Boot persistence, notification hiding
+- **Trusted Devices** - View count and manage trusted connections
 
 ### Local ADB (WiFi)
 - Enable/disable wireless ADB with one tap
@@ -14,34 +22,56 @@ Lightweight Android utility for rooted devices that enables wireless ADB debuggi
 - Auto-enable on device boot
 - Copy `adb connect` command to clipboard
 - Persistent notification when active
-- Real-time status indicator
 
-### Remote Relay (Tailscale)
-- Built-in TCP relay for remote ADB access
-- Auto-detect Tailscale IP (100.x.x.x range)
-- Device authentication with persistent trust
-- Approve/deny new device connections
-- Relay type selector (SSH Tunnel & Custom Relay coming soon)
+### Remote Access Options
 
-### UI/UX
+| Method | Description | Use Case |
+|--------|-------------|----------|
+| **Tailscale Direct** | Connect via Tailscale IP on port 5555 | Same Tailscale network |
+| **Tailscale Relay** | Built-in relay server on port 5556 | Device authentication |
+| **Warpgate** | SSH tunnel via bastion server | Corporate/secure access |
+| **P2P Token** | Direct device-to-device connection | No relay needed |
+
+### P2P Token System (v1.2.0)
+- Generate secure connection tokens
+- Token expires after 30 minutes
+- Mark devices as trusted for persistent access
+- No relay server required
+- STUN-based NAT traversal
+
+### ADB Auto-Pairing (Android 11+)
+- Pair wirelessly without PC setup
+- SPAKE2 + TLS 1.3 security
+- One-time pairing, persistent access
+
+### Shizuku Support
+- Works without root using Shizuku
+- Proper UserService integration
+- Shell or root-level access depending on Shizuku mode
+
+### Theme Customization
+- Light / Dark / System modes
+- 6 accent colors: Blue, Teal, Purple, Orange, Pink, Green
 - Material 3 design language
-- Dark mode support (follows system)
-- Edge-to-edge modern UI
-- Tabbed interface (Local ADB / Remote Relay / Help)
-- **No ads, no analytics, no bloat** (~2MB)
 
 ## Requirements
 
-- Android 8.0+ (API 26)
-- Root access (Magisk, KernelSU, etc.)
-- Tailscale (optional, for remote relay)
+| Feature | Requirement |
+|---------|-------------|
+| Basic ADB | Root access OR Shizuku |
+| ADB Pairing | Android 11+ (API 30) |
+| Tailscale Relay | Tailscale app installed |
+| Warpgate | SSH access to bastion server |
+| P2P Token | Internet connection |
+
+**Minimum:** Android 8.0 (API 26)
 
 ## Installation
 
-1. Download the latest APK from [Releases](../../releases)
-2. Install on your rooted device
-3. Grant root permissions when prompted
-4. Enable wireless ADB from the Local ADB tab
+1. Download the latest APK from [Releases](https://github.com/Danz17/Simple-wireless-ADB/releases)
+2. Install on your device
+3. Grant root/Shizuku permissions when prompted
+4. Enable wireless ADB from the Dashboard
 
 ## Usage
 
@@ -65,43 +95,43 @@ adb connect <TAILSCALE_IP>:5556
 adb connect 100.99.87.44:5556
 ```
 
-First connection from a new device requires approval on your phone. Approved devices auto-connect on subsequent connections.
+### P2P Token Connection
 
-## Split Tunnel Setup (Recommended)
+1. Generate token on device A (Dashboard → P2P Token)
+2. Share the token with device B
+3. Device B connects using the token
+4. Approve on device A (or mark as trusted)
 
-For best performance with Tailscale remote access:
+### Warpgate SSH Tunnel
 
-1. Open Tailscale app on your phone
-2. Go to **Settings > Split Tunneling**
-3. Enable "Use Tailscale for specific apps"
-4. Add only: **RootADB Pro**
+1. Configure Warpgate host, credentials, and target in Remote Relay tab
+2. Enable Warpgate toggle
+3. Connect via the forwarded local port
 
-This routes only ADB traffic through Tailscale, keeping other apps at full speed while maintaining remote ADB access.
-
-## How It Works
-
-### Architecture
+## Architecture
 
 ```
 LOCAL ADB:
-[PC on WiFi] ────> [Android:5555] ────> [ADB Daemon]
-                        │
-                   RootADB Pro
-                   (enables ADB)
+[PC on WiFi] ────────────> [Android:5555] ───> [ADB Daemon]
+                                │
+                           RootADB Pro
+                           (enables ADB)
 
-REMOTE RELAY:
-[Remote PC] ──Tailscale VPN──> [Android:5556] ──relay──> [ADB:5555]
-    │                               │                        │
-100.x.x.x                      RootADB Pro              Local Daemon
-                              (authenticates)
-```
+TAILSCALE RELAY:
+[Remote PC] ──Tailscale──> [Android:5556] ──relay──> [ADB:5555]
+    │                           │                        │
+100.x.x.x                  RootADB Pro              Local Daemon
+                          (authenticates)
 
-### Root Commands
+WARPGATE:
+[Remote PC] ──SSH Tunnel──> [Bastion:2222] ──forward──> [Android:5555]
+                                │
+                        Warpgate Server
 
-```bash
-su -c setprop service.adb.tcp.port <PORT>
-su -c stop adbd
-su -c start adbd
+P2P TOKEN:
+[Device A] <──STUN/Direct──> [Device B]
+     │                            │
+ Generates Token            Uses Token
 ```
 
 ## Security
@@ -109,22 +139,27 @@ su -c start adbd
 | Layer | Protection |
 |-------|------------|
 | Network | Tailscale relay only accepts 100.x.x.x range |
-| Device Auth | First connection requires phone approval |
-| Persistence | Approved devices remembered, auto-connect |
-| ADB Auth | Standard RSA key authentication still applies |
-| Encryption | Tailscale provides WireGuard encryption |
+| Device Auth | First connection requires approval |
+| P2P Tokens | Expire after 30 minutes, device-bound |
+| ADB Pairing | SPAKE2 + TLS 1.3 encryption |
+| Warpgate | SSH tunnel encryption |
+| ADB Auth | Standard RSA key authentication |
+
+## Privacy
+
+RootADB Pro does **NOT** collect any personal data. All settings are stored locally on your device. See our [Privacy Policy](https://danz17.github.io/Simple-wireless-ADB/privacy-policy.html).
 
 ## Build
 
 ```bash
 # Clone the repo
-git clone https://github.com/AlaQwe/RootADB-Pro.git
-cd RootADB-Pro
+git clone https://github.com/Danz17/Simple-wireless-ADB.git
+cd Simple-wireless-ADB
 
 # Build debug APK
 ./gradlew assembleDebug
 
-# Build release APK
+# Build release APK (requires signing config)
 ./gradlew assembleRelease
 ```
 
@@ -132,47 +167,72 @@ cd RootADB-Pro
 
 ```
 app/src/main/java/com/phenix/wirelessadb/
-├── AdbManager.kt           # Core ADB logic (root shell, IP detection)
-├── AdbService.kt           # Foreground service + notification + relay
-├── BootReceiver.kt         # Auto-enable on device boot
-├── MainActivity.kt         # ViewPager + tab navigation
-├── PrefsManager.kt         # SharedPreferences wrapper
-├── ui/
-│   ├── LocalAdbFragment.kt     # Tab 1: WiFi ADB
-│   ├── RemoteRelayFragment.kt  # Tab 2: Tailscale relay
-│   └── HelpFragment.kt         # Tab 3: Help & about
+├── AdbManager.kt              # Core ADB logic
+├── AdbService.kt              # Foreground service
+├── BootReceiver.kt            # Auto-enable on boot
+├── MainActivity.kt            # Main activity
+├── PrefsManager.kt            # Settings storage
+├── model/                     # Data models
+│   ├── ConnectionMode.kt
+│   ├── P2PToken.kt
+│   ├── TrustedDevice.kt
+│   └── StatusIndicators.kt
+├── p2p/                       # P2P Token System
+│   ├── P2PManager.kt
+│   └── TokenGenerator.kt
+├── pairing/                   # ADB Pairing (Android 11+)
+│   ├── AdbPairingClient.kt
+│   ├── AdbPairingManager.kt
+│   └── TrustAllManager.kt
+├── relay/                     # TCP Relay
+│   ├── AdbRelayServer.kt
+│   ├── ConnectionProxy.kt
+│   ├── DeviceAuthManager.kt
+│   └── TailscaleHelper.kt
+├── shell/                     # Shell Execution
+│   ├── ShellExecutor.kt
+│   ├── ShizukuExecutor.kt
+│   └── ShizukuServiceManager.kt
+├── theme/                     # Theme System
+│   ├── ThemeManager.kt
+│   ├── ThemeMode.kt
+│   └── AccentColor.kt
+├── ui/                        # UI Fragments
+│   ├── DashboardFragment.kt
+│   ├── RemoteRelayFragment.kt
+│   ├── HelpFragment.kt
+│   └── AdbPairingDialog.kt
 ├── viewmodel/
-│   └── AdbViewModel.kt         # Shared state management
-└── relay/
-    ├── AdbRelayServer.kt       # TCP relay server with auth
-    ├── ConnectionProxy.kt      # Bidirectional socket bridge
-    ├── DeviceAuthManager.kt    # Trusted device whitelist
-    └── TailscaleHelper.kt      # Tailscale IP detection
+│   └── AdbViewModel.kt
+└── warpgate/                  # Warpgate SSH
+    ├── WarpgateManager.kt
+    └── WarpgateConfig.kt
 ```
 
-## Roadmap
+## Changelog
 
-### v1.0.0 (Current)
-- [x] Enable/disable wireless ADB
-- [x] Custom port configuration
-- [x] Auto-enable on boot
-- [x] Tailscale relay server
-- [x] Device authentication
-- [x] Material 3 UI with dark mode
-- [x] Tabbed interface
-- [x] Split tunnel documentation
-- [x] Relay type selector (future-ready)
+### v1.2.0 (Current)
+- **Dashboard Tab** - Unified control center
+- **Theme System** - Light/Dark modes + 6 accent colors
+- **P2P Token** - Device-to-device connections
+- **ADB Auto-Pairing** - Android 11+ wireless pairing
+- **Shizuku Enhancement** - Proper UserService integration
+- **Warpgate** - SSH tunnel support
+- **Help Downloads** - Quick links to tools
 
-### v1.1.0 (Planned)
-- [ ] SSH Tunnel relay option
-- [ ] Custom relay server support
-- [ ] QR code for quick connection
-- [ ] Connection history
+### v1.1.0
+- Status indicators for connection modes
+- Warpgate SSH tunnel configuration
+- Connection mode selector
+- Developer notification hiding
 
-### v2.0.0 (Future)
-- [ ] Trusted device management screen
-- [ ] PC companion scripts (auto-connect)
-- [ ] Widget for quick toggle
+### v1.0.0
+- Enable/disable wireless ADB
+- Custom port configuration
+- Auto-enable on boot
+- Tailscale relay server
+- Device authentication
+- Material 3 UI with dark mode
 
 ## License
 
@@ -183,3 +243,7 @@ MIT License - See [LICENSE](LICENSE) for details.
 **Phenix** (Alaa Qweider)
 Email: alaa@nulled.ai
 Package: `com.phenix.wirelessadb`
+
+---
+
+**No ads. No analytics. No bloat.** Just wireless ADB that works.
