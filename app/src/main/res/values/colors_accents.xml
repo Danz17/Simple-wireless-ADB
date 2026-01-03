@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Accent Color Presets (v1.2.0) -->
+
+  <!-- Blue -->
+  <color name="accent_blue_primary">#1976D2</color>
+  <color name="accent_blue_variant">#1565C0</color>
+
+  <!-- Teal (Default) -->
+  <color name="accent_teal_primary">#00897B</color>
+  <color name="accent_teal_variant">#00796B</color>
+
+  <!-- Purple -->
+  <color name="accent_purple_primary">#7B1FA2</color>
+  <color name="accent_purple_variant">#6A1B9A</color>
+
+  <!-- Orange -->
+  <color name="accent_orange_primary">#F57C00</color>
+  <color name="accent_orange_variant">#EF6C00</color>
+
+  <!-- Pink -->
+  <color name="accent_pink_primary">#D81B60</color>
+  <color name="accent_pink_variant">#C2185B</color>
+
+  <!-- Green -->
+  <color name="accent_green_primary">#388E3C</color>
+  <color name="accent_green_variant">#2E7D32</color>
+
+  <!-- Common on-primary color for all accents -->
+  <color name="accent_on_primary">#FFFFFF</color>
+</resources>

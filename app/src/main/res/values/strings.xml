@@ -8,9 +8,26 @@
   <string name="version_format">Version %1$s</string>
 
   <!-- Tab titles -->
+  <string name="tab_dashboard">Dashboard</string>
   <string name="tab_local_adb">Local ADB</string>
   <string name="tab_remote_relay">Remote Relay</string>
   <string name="tab_help">Help</string>
+
+  <!-- Dashboard v1.2.0 -->
+  <string name="section_quick_status">QUICK STATUS</string>
+  <string name="section_quick_toggles">QUICK TOGGLES</string>
+  <string name="section_settings">SETTINGS</string>
+  <string name="toggle_local_adb">Local ADB</string>
+  <string name="toggle_tailscale_relay">Tailscale Relay</string>
+  <string name="toggle_warpgate">Warpgate Tunnel</string>
+  <string name="dashboard_command_label">Current connection command:</string>
+  <string name="btn_manage">Manage</string>
+
+  <!-- Plurals -->
+  <plurals name="device_count">
+    <item quantity="one">%d device</item>
+    <item quantity="other">%d devices</item>
+  </plurals>
 
   <!-- Status -->
   <string name="status_connected">Connected</string>
@@ -87,4 +104,106 @@
 
   <!-- Footer -->
   <string name="footer_root_required">Requires root access</string>
+
+  <!-- Status Indicators (v1.1.0) -->
+  <string name="indicator_local_adb">Local ADB status indicator</string>
+  <string name="indicator_tailscale">Tailscale status indicator</string>
+  <string name="indicator_warpgate">Warpgate status indicator</string>
+
+  <!-- Connection Modes (v1.1.0) -->
+  <string name="connection_mode_label">Connection Mode</string>
+  <string name="mode_local_wifi">Local WiFi</string>
+  <string name="mode_tailscale_direct">Tailscale Direct</string>
+  <string name="mode_tailscale_relay">Tailscale Relay</string>
+  <string name="mode_warpgate">Warpgate</string>
+  <string name="relay_type_tailscale_direct">Tailscale Direct (Port 5555)</string>
+  <string name="relay_type_tailscale_relay">Tailscale Relay (Port 5556)</string>
+  <string name="relay_type_warpgate">Warpgate Bastion</string>
+
+  <!-- Warpgate (v1.1.0) -->
+  <string name="warpgate_title">WARPGATE CONFIGURATION</string>
+  <string name="warpgate_host_hint">Warpgate Host</string>
+  <string name="warpgate_port_hint">Port</string>
+  <string name="warpgate_username_hint">Username</string>
+  <string name="warpgate_password_hint">Password</string>
+  <string name="warpgate_target_hint">Target Name</string>
+  <string name="warpgate_local_port_hint">Local Port</string>
+  <string name="btn_connect">Connect</string>
+  <string name="btn_disconnect">Disconnect</string>
+  <string name="warpgate_connected">Connected via Warpgate</string>
+  <string name="warpgate_disconnected">Not connected</string>
+  <string name="warpgate_connecting">Connecting…</string>
+
+  <!-- Notification Hiding (v1.1.0) -->
+  <string name="settings_notification_title">Developer Notification</string>
+  <string name="settings_hide_notification">Hide USB debugging notification</string>
+  <string name="settings_hide_notification_desc">Hides the system notification when ADB is enabled (requires root)</string>
+
+  <!-- Shizuku (v1.1.0) -->
+  <string name="shizuku_title">Shizuku Mode</string>
+  <string name="shizuku_desc">Using Shizuku for ADB control (limited features)</string>
+  <string name="shizuku_not_available">Shizuku not available</string>
+  <string name="shizuku_request_permission">Grant Shizuku Permission</string>
+
+  <!-- P2P Token System (v1.2.0) -->
+  <string name="p2p_title">P2P TOKEN CONNECTION</string>
+  <string name="p2p_description">Connect device-to-device without relay server</string>
+  <string name="p2p_token_label">Your Token</string>
+  <string name="p2p_token_placeholder">---–---–---</string>
+  <string name="p2p_generate_token">Generate Token</string>
+  <string name="p2p_revoke_token">Revoke</string>
+  <string name="p2p_show_token">Show</string>
+  <string name="p2p_hide_token">Hide</string>
+  <string name="p2p_copy_token">Copy Token</string>
+  <string name="p2p_connect_with_token">Connect Using Token</string>
+  <string name="p2p_token_input_hint">Enter token (ABC-123-XYZ)</string>
+  <string name="p2p_status_idle">No active token</string>
+  <string name="p2p_status_ready">Token ready - share with peer</string>
+  <string name="p2p_status_connecting">Connecting…</string>
+  <string name="p2p_status_connected">Connected</string>
+  <string name="p2p_status_failed">Connection failed</string>
+  <string name="p2p_expires_in">Expires in %1$s</string>
+  <string name="p2p_warning_title">Security Warning</string>
+  <string name="p2p_warning_message">Sharing this token allows another device to connect to your ADB. Only share with trusted devices.\n\nThe token expires in 30 minutes and changes after each disconnect.</string>
+  <string name="p2p_warning_understand">I Understand</string>
+  <string name="p2p_make_trusted">Mark as trusted device</string>
+  <string name="relay_type_p2p_token">P2P Token</string>
+
+  <!-- Theme Settings (v1.2.0) -->
+  <string name="theme_settings_title">Theme Settings</string>
+  <string name="theme_mode_label">Theme Mode</string>
+  <string name="theme_mode_system">System</string>
+  <string name="theme_mode_light">Light</string>
+  <string name="theme_mode_dark">Dark</string>
+  <string name="accent_color_label">Accent Color</string>
+  <string name="accent_blue">Blue</string>
+  <string name="accent_teal">Teal</string>
+  <string name="accent_purple">Purple</string>
+  <string name="accent_orange">Orange</string>
+  <string name="accent_pink">Pink</string>
+  <string name="accent_green">Green</string>
+
+  <!-- ADB Pairing (v1.2.0 Phase 6) -->
+  <string name="pairing_title">ADB Pairing</string>
+  <string name="pairing_instructions_header">How to pair:</string>
+  <string name="pairing_instructions">1. Go to Settings → Developer Options\n2. Enable \'Wireless debugging\'\n3. Tap \'Pair device with pairing code\'\n4. Enter the port and 6-digit code below</string>
+  <string name="pairing_port_hint">Pairing Port</string>
+  <string name="pairing_port_helper">The 5-digit port shown in Wireless debugging</string>
+  <string name="pairing_code_hint">Pairing Code</string>
+  <string name="pairing_code_helper">The 6-digit code shown on screen</string>
+  <string name="pairing_pair_button">Pair</string>
+  <string name="pairing_connecting">Connecting…</string>
+  <string name="pairing_success">Pairing successful!</string>
+  <string name="pairing_failed">Pairing failed</string>
+  <string name="pairing_not_supported">ADB Pairing requires Android 11 or higher</string>
+  <string name="pairing_card_title">Auto-Pair (Android 11+)</string>
+  <string name="pairing_card_description">Pair wirelessly without PC setup</string>
+  <string name="btn_start_pairing">Start Pairing</string>
+
+  <!-- Downloads Section (v1.2.0 Phase 5) -->
+  <string name="help_downloads_title">Download Tools</string>
+  <string name="help_downloads_desc">Get the tools you need for wireless ADB:</string>
+  <string name="btn_download_adb">Android Platform Tools (ADB)</string>
+  <string name="btn_download_tailscale">Tailscale VPN</string>
+  <string name="btn_download_ngrok">ngrok Tunneling</string>
 </resources>

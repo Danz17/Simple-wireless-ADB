@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:padding="24dp">
+
+  <!-- Title -->
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/pairing_title"
+    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+    android:layout_marginBottom="16dp" />
+
+  <!-- Instructions Card -->
+  <com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="?attr/colorSurfaceVariant"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="16dp">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pairing_instructions_header"
+        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+        android:layout_marginBottom="8dp" />
+
+      <TextView
+        android:id="@+id/instructions_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pairing_instructions"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:lineSpacingExtra="4dp" />
+
+    </LinearLayout>
+  </com.google.android.material.card.MaterialCardView>
+
+  <!-- Port Input -->
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/port_layout"
+    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:hint="@string/pairing_port_hint"
+    app:helperText="@string/pairing_port_helper"
+    app:helperTextEnabled="true">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/port_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="number"
+      android:maxLength="5" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- Pairing Code Input -->
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/code_layout"
+    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:hint="@string/pairing_code_hint"
+    app:helperText="@string/pairing_code_helper"
+    app:helperTextEnabled="true">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/code_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="number"
+      android:maxLength="6" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- Status/Progress -->
+  <LinearLayout
+    android:id="@+id/status_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:visibility="gone"
+    android:layout_marginBottom="16dp">
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+      android:id="@+id/progress_indicator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      app:indicatorSize="24dp"
+      app:trackThickness="3dp" />
+
+    <TextView
+      android:id="@+id/status_text"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_marginStart="12dp"
+      android:text="@string/pairing_connecting"
+      android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+
+  </LinearLayout>
+
+  <!-- Error Message -->
+  <TextView
+    android:id="@+id/error_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="?attr/colorError"
+    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+    android:visibility="gone"
+    android:layout_marginBottom="16dp" />
+
+  <!-- Buttons -->
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="end">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btn_cancel"
+      style="@style/Widget.Material3.Button.TextButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@android:string/cancel" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btn_pair"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/pairing_pair_button"
+      android:layout_marginStart="8dp" />
+
+  </LinearLayout>
+
+</LinearLayout>

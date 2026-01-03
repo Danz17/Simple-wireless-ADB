@@ -2,18 +2,27 @@ package com.phenix.wirelessadb.relay
 
 import android.content.Context
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.phenix.wirelessadb.model.AuthMethod
+import com.phenix.wirelessadb.model.DeviceIdentifier
+import com.phenix.wirelessadb.model.TrustedDevice
 
 /**
- * Manages trusted devices for the ADB relay server.
- * Stores device IPs with metadata in SharedPreferences.
+ * Manages trusted devices for the ADB relay server (v1.2.0).
+ *
+ * Enhanced to support:
+ * - IP-based authentication (legacy)
+ * - Hardware ID authentication (ANDROID_ID, fingerprint)
+ * - Token-based authentication (P2P)
+ *
+ * Backwards compatible with v1.0 stored devices.
  */
 class DeviceAuthManager(context: Context) {
 
   private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
   private val gson = Gson()
 
-  data class TrustedDevice(
+  // Legacy model for backwards compatibility with stored data
+  private data class LegacyTrustedDevice(
     val ip: String,
     val name: String?,
     val addedAt: Long,
@@ -21,40 +30,126 @@ class DeviceAuthManager(context: Context) {
   )
 
   /**
-   * Check if a device IP is in the trusted list.
+   * Check if a device IP is in the trusted list (legacy method).
    */
   fun isDeviceTrusted(clientIp: String): Boolean {
-    return prefs.contains(clientIp)
+    return prefs.contains(clientIp) || findDeviceByIp(clientIp) != null
   }
 
   /**
-   * Add a device to the trusted list.
+   * Check if a device identifier is trusted (enhanced method).
+   */
+  fun isDeviceTrusted(identifier: DeviceIdentifier): Boolean {
+    return findDeviceByIdentifier(identifier) != null
+  }
+
+  /**
+   * Find a trusted device by IP address.
+   */
+  fun findDeviceByIp(ip: String): TrustedDevice? {
+    return getTrustedDevices().find { it.ip == ip }
+  }
+
+  /**
+   * Find a trusted device by hardware identifier.
+   */
+  fun findDeviceByIdentifier(identifier: DeviceIdentifier): TrustedDevice? {
+    return getTrustedDevices().find { identifier.matchesTrustedDevice(it) }
+  }
+
+  /**
+   * Find a trusted device by persistent token.
+   */
+  fun findDeviceByToken(token: String): TrustedDevice? {
+    return getTrustedDevices().find { it.persistentToken == token }
+  }
+
+  /**
+   * Add a device to the trusted list (legacy IP-only method).
    */
   fun addTrustedDevice(clientIp: String, name: String? = null) {
-    val now = System.currentTimeMillis()
-    val device = TrustedDevice(
-      ip = clientIp,
-      name = name,
-      addedAt = now,
-      lastSeen = now
-    )
-    prefs.edit().putString(clientIp, gson.toJson(device)).apply()
+    val device = TrustedDevice.fromIpOnly(clientIp, name)
+    saveDevice(device)
   }
 
   /**
-   * Remove a device from the trusted list.
+   * Add an enhanced trusted device.
+   */
+  fun addTrustedDevice(device: TrustedDevice) {
+    saveDevice(device)
+  }
+
+  /**
+   * Add a device from identifier with auth method.
+   */
+  fun addTrustedDevice(
+    identifier: DeviceIdentifier,
+    ip: String?,
+    name: String? = null,
+    authMethod: AuthMethod = AuthMethod.IP_ADDRESS,
+    persistentToken: String? = null
+  ): TrustedDevice {
+    val device = identifier.toTrustedDevice(
+      ip = ip,
+      name = name,
+      authMethod = authMethod,
+      persistentToken = persistentToken
+    )
+    saveDevice(device)
+    return device
+  }
+
+  /**
+   * Save a device to storage.
+   */
+  private fun saveDevice(device: TrustedDevice) {
+    // Use device ID as the key for enhanced devices
+    val key = device.id
+    prefs.edit().putString(key, gson.toJson(device)).apply()
+  }
+
+  /**
+   * Remove a device from the trusted list by IP.
    */
   fun removeTrustedDevice(clientIp: String) {
+    // Try to find and remove by IP
+    val device = findDeviceByIp(clientIp)
+    if (device != null) {
+      prefs.edit().remove(device.id).apply()
+    }
+    // Also remove legacy key if present
     prefs.edit().remove(clientIp).apply()
+  }
+
+  /**
+   * Remove a device by its ID.
+   */
+  fun removeTrustedDeviceById(deviceId: String) {
+    prefs.edit().remove(deviceId).apply()
   }
 
   /**
    * Get all trusted devices.
    */
   fun getTrustedDevices(): List<TrustedDevice> {
-    return prefs.all.mapNotNull { (_, value) ->
+    return prefs.all.mapNotNull { (key, value) ->
       try {
-        gson.fromJson(value as String, TrustedDevice::class.java)
+        val json = value as String
+        // Try parsing as enhanced device first
+        try {
+          gson.fromJson(json, TrustedDevice::class.java)
+        } catch (e: Exception) {
+          // Fallback: try parsing as legacy device
+          val legacy = gson.fromJson(json, LegacyTrustedDevice::class.java)
+          TrustedDevice(
+            id = key, // Use the IP as ID for legacy devices
+            ip = legacy.ip,
+            name = legacy.name,
+            addedAt = legacy.addedAt,
+            lastSeen = legacy.lastSeen,
+            authMethod = AuthMethod.IP_ADDRESS
+          )
+        }
       } catch (e: Exception) {
         null
       }
@@ -62,31 +157,50 @@ class DeviceAuthManager(context: Context) {
   }
 
   /**
-   * Update the last seen timestamp for a device.
+   * Update the last seen timestamp for a device by IP.
    */
   fun updateLastSeen(clientIp: String) {
-    val json = prefs.getString(clientIp, null) ?: return
-    try {
-      val device = gson.fromJson(json, TrustedDevice::class.java)
-      val updated = device.copy(lastSeen = System.currentTimeMillis())
-      prefs.edit().putString(clientIp, gson.toJson(updated)).apply()
-    } catch (e: Exception) {
-      // Ignore parsing errors
-    }
+    val device = findDeviceByIp(clientIp) ?: return
+    updateDevice(device.copy(lastSeen = System.currentTimeMillis()))
   }
 
   /**
-   * Update device name.
+   * Update the last seen timestamp for a device by identifier.
+   */
+  fun updateLastSeen(identifier: DeviceIdentifier) {
+    val device = findDeviceByIdentifier(identifier) ?: return
+    updateDevice(device.copy(lastSeen = System.currentTimeMillis()))
+  }
+
+  /**
+   * Update a device in storage.
+   */
+  fun updateDevice(device: TrustedDevice) {
+    prefs.edit().putString(device.id, gson.toJson(device)).apply()
+  }
+
+  /**
+   * Update device name by IP.
    */
   fun updateDeviceName(clientIp: String, name: String) {
-    val json = prefs.getString(clientIp, null) ?: return
-    try {
-      val device = gson.fromJson(json, TrustedDevice::class.java)
-      val updated = device.copy(name = name, lastSeen = System.currentTimeMillis())
-      prefs.edit().putString(clientIp, gson.toJson(updated)).apply()
-    } catch (e: Exception) {
-      // Ignore parsing errors
-    }
+    val device = findDeviceByIp(clientIp) ?: return
+    updateDevice(device.copy(name = name, lastSeen = System.currentTimeMillis()))
+  }
+
+  /**
+   * Upgrade a device to persistent token auth.
+   */
+  fun upgradeToTokenAuth(
+    device: TrustedDevice,
+    persistentToken: String
+  ): TrustedDevice {
+    val upgraded = device.copy(
+      persistentToken = persistentToken,
+      authMethod = AuthMethod.TOKEN_PERSISTENT,
+      lastSeen = System.currentTimeMillis()
+    )
+    updateDevice(upgraded)
+    return upgraded
   }
 
   /**

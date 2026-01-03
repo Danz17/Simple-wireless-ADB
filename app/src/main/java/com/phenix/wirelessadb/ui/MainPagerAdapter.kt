@@ -7,15 +7,15 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 /**
  * ViewPager2 adapter for the main tab navigation.
  *
- * TAB STRUCTURE:
- * ==============
- * Tab 0: LocalAdbFragment    - LOCAL WiFi ADB (IP: 10.x.x.x, Port: 5555)
- * Tab 1: RemoteRelayFragment - REMOTE Tailscale relay (IP: 100.x.x.x, Port: 5556)
- * Tab 2: HelpFragment        - Help docs and credits
+ * TAB STRUCTURE (v1.2.0):
+ * =======================
+ * Tab 0: DashboardFragment   - Unified control center (Local ADB + Settings)
+ * Tab 1: RemoteRelayFragment - REMOTE connections (Tailscale/Warpgate/P2P)
+ * Tab 2: HelpFragment        - Help docs, downloads, theme settings
  *
- * IMPORTANT: Do NOT mix up the tabs!
- * - Local tab shows WiFi IP for same-network connections
- * - Remote tab shows Tailscale IP for internet connections
+ * v1.2.0 Changes:
+ * - Replaced LocalAdbFragment with DashboardFragment
+ * - Dashboard merges local ADB + boot/notification settings + trusted devices
  */
 class MainPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
@@ -23,9 +23,9 @@ class MainPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activi
 
   override fun createFragment(position: Int): Fragment {
     return when (position) {
-      TAB_LOCAL_ADB -> LocalAdbFragment()      // Tab 0: WiFi IP + port 5555
-      TAB_REMOTE_RELAY -> RemoteRelayFragment() // Tab 1: Tailscale IP + port 5556
-      TAB_HELP -> HelpFragment()                // Tab 2: Help & credits
+      TAB_DASHBOARD -> DashboardFragment()       // Tab 0: Dashboard control center
+      TAB_REMOTE_RELAY -> RemoteRelayFragment()  // Tab 1: Remote connections
+      TAB_HELP -> HelpFragment()                 // Tab 2: Help & downloads
       else -> throw IllegalArgumentException("Invalid tab position: $position")
     }
   }
@@ -33,9 +33,9 @@ class MainPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activi
   companion object {
     const val TAB_COUNT = 3
 
-    // Tab indices - DO NOT CHANGE without updating fragments!
-    const val TAB_LOCAL_ADB = 0     // LocalAdbFragment: WiFi connections
-    const val TAB_REMOTE_RELAY = 1  // RemoteRelayFragment: Tailscale connections
-    const val TAB_HELP = 2          // HelpFragment: Documentation
+    // Tab indices (v1.2.0)
+    const val TAB_DASHBOARD = 0     // DashboardFragment: Unified control center
+    const val TAB_REMOTE_RELAY = 1  // RemoteRelayFragment: Remote connections
+    const val TAB_HELP = 2          // HelpFragment: Help & downloads
   }
 }

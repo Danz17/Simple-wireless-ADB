@@ -12,9 +12,190 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Theme Settings Card (v1.2.0) -->
     <com.google.android.material.card.MaterialCardView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      app:cardCornerRadius="12dp"
+      app:cardElevation="0dp"
+      app:strokeWidth="1dp"
+      app:strokeColor="?colorSecondary"
+      app:cardBackgroundColor="?colorSurface">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/theme_settings_title"
+          android:textSize="16sp"
+          android:textStyle="bold"
+          android:textColor="?colorSecondary" />
+
+        <!-- Theme Mode Row -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="center_vertical"
+          android:layout_marginTop="12dp">
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/theme_mode_label"
+            android:textSize="14sp"
+            android:textColor="?colorOnSurface" />
+
+          <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/themeModeToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/themeModeSystem"
+              style="@style/Widget.Material3.Button.OutlinedButton"
+              android:layout_width="wrap_content"
+              android:layout_height="36dp"
+              android:minWidth="0dp"
+              android:paddingStart="12dp"
+              android:paddingEnd="12dp"
+              android:text="@string/theme_mode_system"
+              android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/themeModeLight"
+              style="@style/Widget.Material3.Button.OutlinedButton"
+              android:layout_width="wrap_content"
+              android:layout_height="36dp"
+              android:minWidth="0dp"
+              android:paddingStart="12dp"
+              android:paddingEnd="12dp"
+              android:text="@string/theme_mode_light"
+              android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/themeModeDark"
+              style="@style/Widget.Material3.Button.OutlinedButton"
+              android:layout_width="wrap_content"
+              android:layout_height="36dp"
+              android:minWidth="0dp"
+              android:paddingStart="12dp"
+              android:paddingEnd="12dp"
+              android:text="@string/theme_mode_dark"
+              android:textSize="12sp" />
+
+          </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </LinearLayout>
+
+        <!-- Accent Color Row -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="center_vertical"
+          android:layout_marginTop="12dp">
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/accent_color_label"
+            android:textSize="14sp"
+            android:textColor="?colorOnSurface" />
+
+          <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/accentBlue"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="@color/accent_blue_primary"
+                android:contentDescription="@string/accent_blue"
+                app:iconSize="0dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/accentTeal"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="@color/accent_teal_primary"
+                android:contentDescription="@string/accent_teal"
+                app:iconSize="0dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/accentPurple"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="@color/accent_purple_primary"
+                android:contentDescription="@string/accent_purple"
+                app:iconSize="0dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/accentOrange"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="@color/accent_orange_primary"
+                android:contentDescription="@string/accent_orange"
+                app:iconSize="0dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/accentPink"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="@color/accent_pink_primary"
+                android:contentDescription="@string/accent_pink"
+                app:iconSize="0dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/accentGreen"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:backgroundTint="@color/accent_green_primary"
+                android:contentDescription="@string/accent_green"
+                app:iconSize="0dp" />
+
+            </LinearLayout>
+
+          </HorizontalScrollView>
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Getting Started Card -->
+    <com.google.android.material.card.MaterialCardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
       app:cardCornerRadius="12dp"
       app:cardElevation="0dp"
       app:strokeWidth="1dp"
@@ -125,6 +306,70 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="12dp"
           android:text="@string/btn_download_scripts" />
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Downloads Card (v1.2.0) -->
+    <com.google.android.material.card.MaterialCardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      app:cardCornerRadius="12dp"
+      app:cardElevation="0dp"
+      app:strokeWidth="1dp"
+      app:strokeColor="?colorPrimary"
+      app:cardBackgroundColor="?colorSurface">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/help_downloads_title"
+          android:textSize="16sp"
+          android:textStyle="bold"
+          android:textColor="?colorPrimary" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/help_downloads_desc"
+          android:textSize="14sp"
+          android:textColor="?colorOnSurface"
+          android:layout_marginTop="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/downloadAdbButton"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="12dp"
+          android:text="@string/btn_download_adb"
+          app:icon="@drawable/ic_download" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/downloadTailscaleButton"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@string/btn_download_tailscale"
+          app:icon="@drawable/ic_download" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/downloadNgrokButton"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@string/btn_download_ngrok"
+          app:icon="@drawable/ic_download" />
 
       </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.phenix.wirelessadb.relay
 
 import android.content.Context
 import android.util.Log
+import com.phenix.wirelessadb.model.TrustedDevice
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.*
@@ -180,7 +181,7 @@ class AdbRelayServer(
   /**
    * Get all trusted devices.
    */
-  fun getTrustedDevices(): List<DeviceAuthManager.TrustedDevice> {
+  fun getTrustedDevices(): List<TrustedDevice> {
     return authManager.getTrustedDevices()
   }
 

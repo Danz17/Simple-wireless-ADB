@@ -11,8 +11,8 @@ android {
     applicationId = "com.phenix.wirelessadb"
     minSdk = 26
     targetSdk = 34
-    versionCode = 3
-    versionName = "1.0.0"
+    versionCode = 5
+    versionName = "1.2.0"
   }
 
   buildTypes {
@@ -38,6 +38,7 @@ android {
   buildFeatures {
     viewBinding = true
     buildConfig = true
+    aidl = true
   }
 }
 
@@ -72,4 +73,14 @@ dependencies {
   // ViewModel
   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
   implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+
+  // JSch for SSH tunneling (Warpgate)
+  implementation("com.jcraft:jsch:0.1.55")
+
+  // Shizuku for non-root privileged access
+  implementation("dev.rikka.shizuku:api:13.1.5")
+  implementation("dev.rikka.shizuku:provider:13.1.5")
+
+  // Conscrypt for TLS 1.3 support (ADB pairing)
+  implementation("org.conscrypt:conscrypt-android:2.5.2")
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Theme accent color check mark size -->
+  <dimen name="accent_check_size">18dp</dimen>
+</resources>

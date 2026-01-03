@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!-- Main App Theme -->
   <style name="Theme.WirelessADB" parent="Theme.Material3.Light.NoActionBar">
     <item name="colorPrimary">@color/primary</item>
     <item name="colorPrimaryContainer">@color/primary_container</item>
@@ -20,5 +21,14 @@
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:navigationBarColor">@android:color/transparent</item>
     <item name="android:windowLightStatusBar">true</item>
+  </style>
+
+  <!-- Dialog Theme -->
+  <style name="Theme.WirelessAdb.Dialog" parent="Theme.Material3.Light.Dialog">
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorSecondary">@color/secondary</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:backgroundDimEnabled">true</item>
+    <item name="android:windowIsFloating">true</item>
   </style>
 </resources>
