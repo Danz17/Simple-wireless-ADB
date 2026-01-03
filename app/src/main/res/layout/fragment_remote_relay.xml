@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TAB 2: REMOTE RELAY
+  ===================
+  This fragment shows TAILSCALE/REMOTE connection info:
+  - Tailscale IP address (e.g., 100.99.87.44)
+  - Relay port (default 5556)
+  - Command: adb connect <tailscale_ip>:5556
+
+  For LOCAL/WIFI connections, see fragment_local_adb.xml
+-->
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fillViewport="true">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Section Header: REMOTE RELAY -->
+    <TextView
+      android:id="@+id/sectionHeader"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/section_remote_relay"
+      android:textSize="12sp"
+      android:textStyle="bold"
+      android:textColor="?colorPrimary"
+      android:letterSpacing="0.1"
+      android:layout_marginBottom="12dp" />
+
+    <!-- Relay Type Dropdown -->
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/relayTypeLayout"
+      style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:hint="@string/relay_type_hint">
+
+      <AutoCompleteTextView
+        android:id="@+id/relayTypeDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Tailscale Status Card: Shows Tailscale IP (100.x.x.x) -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/tailscaleCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:cardCornerRadius="16dp"
+      app:cardElevation="0dp"
+      app:strokeWidth="1dp"
+      app:strokeColor="?colorOutline"
+      app:cardBackgroundColor="?colorSurface">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/section_tailscale"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          android:textColor="?colorPrimary"
+          android:letterSpacing="0.1" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="12dp"
+          android:gravity="center_vertical">
+
+          <View
+            android:id="@+id/tailscaleIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/ic_status_inactive" />
+
+          <TextView
+            android:id="@+id/tailscaleStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tailscale_not_connected"
+            android:textSize="14sp"
+            android:textColor="?colorOnSurfaceVariant"
+            android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+        <!-- Tailscale IP Address (NOT WiFi) -->
+        <TextView
+          android:id="@+id/tailscaleIpText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="---"
+          android:textSize="24sp"
+          android:textStyle="bold"
+          android:textColor="?colorOnSurface"
+          android:fontFamily="monospace"
+          android:layout_marginTop="8dp" />
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Relay Server Switch -->
+    <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/relaySwitch"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:text="@string/switch_relay"
+      android:textSize="16sp"
+      android:textColor="?colorOnSurface" />
+
+    <!-- Remote Command Card: adb connect <tailscale_ip>:5556 -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/remoteCommandCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      app:cardCornerRadius="12dp"
+      app:cardElevation="0dp"
+      app:cardBackgroundColor="?colorSurfaceVariant">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/remote_command_label"
+          android:textSize="12sp"
+          android:textColor="?colorOnSurfaceVariant" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp"
+          android:gravity="center_vertical">
+
+          <TextView
+            android:id="@+id/remoteCommandText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="adb connect ..."
+            android:textSize="13sp"
+            android:fontFamily="monospace"
+            android:textColor="?colorOnSurface" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/remoteCopyButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:icon="@drawable/ic_copy"
+            app:iconSize="20dp"
+            app:iconTint="?colorOnSecondaryContainer"
+            android:contentDescription="@string/copy_command" />
+
+        </LinearLayout>
+
+        <!-- Relay Port (default 5556) -->
+        <TextView
+          android:id="@+id/relayPortText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/relay_port_label"
+          android:textSize="12sp"
+          android:textColor="?colorOnSurfaceVariant"
+          android:layout_marginTop="8dp" />
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Trusted Devices Card -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/trustedDevicesCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      app:cardCornerRadius="12dp"
+      app:cardElevation="0dp"
+      app:strokeWidth="1dp"
+      app:strokeColor="?colorOutline"
+      app:cardBackgroundColor="?colorSurface">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/trusted_devices"
+          android:textSize="14sp"
+          android:textColor="?colorOnSurface" />
+
+        <TextView
+          android:id="@+id/trustedCountText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="0"
+          android:textSize="16sp"
+          android:textStyle="bold"
+          android:textColor="?colorPrimary" />
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Pending Approval Card -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/pendingCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:visibility="gone"
+      app:cardCornerRadius="12dp"
+      app:cardElevation="0dp"
+      app:strokeWidth="2dp"
+      app:strokeColor="@color/warning_orange"
+      app:cardBackgroundColor="?colorSurface">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/pending_approval"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          android:textColor="@color/warning_orange"
+          android:letterSpacing="0.1" />
+
+        <TextView
+          android:id="@+id/pendingIpText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/pending_device_message"
+          android:textSize="14sp"
+          android:textColor="?colorOnSurface"
+          android:layout_marginTop="8dp" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="12dp"
+          android:gravity="end">
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/denyButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_deny"
+            android:layout_marginEnd="8dp" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/approveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_approve" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+  </LinearLayout>
+
+</ScrollView>

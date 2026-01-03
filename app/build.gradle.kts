@@ -11,7 +11,7 @@ android {
     applicationId = "com.phenix.wirelessadb"
     minSdk = 26
     targetSdk = 34
-    versionCode = 1
+    versionCode = 3
     versionName = "1.0.0"
   }
 
@@ -37,6 +37,7 @@ android {
 
   buildFeatures {
     viewBinding = true
+    buildConfig = true
   }
 }
 
@@ -46,4 +47,29 @@ dependencies {
   implementation("com.google.android.material:material:1.11.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+  // TCP Relay Server
+  implementation("io.ktor:ktor-network:2.3.7")
+
+  // JSON for trusted device storage
+  implementation("com.google.code.gson:gson:2.10.1")
+
+  // Coroutines
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+  // LocalBroadcastManager
+  implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
+
+  // ViewPager2 for tabs
+  implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+  // Fragment with Kotlin extensions
+  implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+  // Activity with Kotlin extensions (for viewModels delegate)
+  implementation("androidx.activity:activity-ktx:1.8.2")
+
+  // ViewModel
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+  implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 }

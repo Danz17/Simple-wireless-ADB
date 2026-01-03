@@ -1,4 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Wireless ADB</string>
+  <!-- App info -->
+  <string name="app_name">RootADB Pro</string>
+  <string name="app_name_short">RootADB Pro</string>
+  <string name="app_name_full">RootADB Pro</string>
+  <string name="app_subtitle">by Phenix</string>
+  <string name="version_format">Version %1$s</string>
+
+  <!-- Tab titles -->
+  <string name="tab_local_adb">Local ADB</string>
+  <string name="tab_remote_relay">Remote Relay</string>
+  <string name="tab_help">Help</string>
+
+  <!-- Status -->
+  <string name="status_connected">Connected</string>
+  <string name="status_disabled">Disabled</string>
+  <string name="status_checking">Checking…</string>
+
+  <!-- Buttons -->
+  <string name="btn_enable">Enable</string>
+  <string name="btn_disable">Disable</string>
+  <string name="btn_approve">Approve</string>
+  <string name="btn_deny">Deny</string>
+  <string name="btn_github">GitHub</string>
+  <string name="btn_email">Email</string>
+  <string name="btn_report_bug">Report Bug</string>
+  <string name="btn_download_scripts">Download PC Scripts</string>
+
+  <!-- Switches -->
+  <string name="switch_boot">Enable on boot</string>
+  <string name="switch_relay">Enable relay server</string>
+
+  <!-- Inputs -->
+  <string name="hint_port">Port</string>
+
+  <!-- Section Headers -->
+  <string name="section_local_network">LOCAL NETWORK (WiFi)</string>
+  <string name="section_remote_relay">REMOTE RELAY (Tailscale)</string>
+
+  <!-- Local ADB -->
+  <string name="local_command_label">Local connect command:</string>
+  <string name="adb_not_active">ADB not active</string>
+  <string name="copy_command">Copy command</string>
+  <string name="copied">Copied!</string>
+  <string name="error_no_root">Root access required</string>
+  <string name="error_invalid_port">Port must be 1024-65535</string>
+
+  <!-- Remote Relay -->
+  <string name="relay_type_hint">Relay Type</string>
+  <string name="relay_type_tailscale">Tailscale</string>
+  <string name="relay_type_ssh">SSH Tunnel (Coming Soon)</string>
+  <string name="relay_type_custom">Custom Relay (Coming Soon)</string>
+  <string name="section_tailscale">TAILSCALE STATUS</string>
+  <string name="tailscale_connected">Connected</string>
+  <string name="tailscale_not_connected">Not connected</string>
+  <string name="tailscale_not_active">Tailscale not active</string>
+  <string name="remote_command_label">Remote connect command:</string>
+  <string name="relay_port_label">Relay port</string>
+  <string name="relay_port_format">Relay port: %1$d</string>
+  <string name="trusted_devices">Trusted devices</string>
+  <string name="pending_approval">PENDING APPROVAL</string>
+  <string name="pending_device_message">A device wants to connect</string>
+  <string name="pending_device_format">Device %1$s wants to connect</string>
+
+  <!-- Help section -->
+  <string name="help_getting_started">Getting Started</string>
+  <string name="help_getting_started_content">1. Enable wireless ADB from the Local ADB tab\n2. Note the IP address and port shown\n3. On your PC, run: adb connect IP:PORT\n4. Accept the connection prompt on your device\n5. You can now use ADB wirelessly!</string>
+
+  <string name="help_remote_access">Remote Access via Tailscale</string>
+  <string name="help_remote_access_content">1. Install Tailscale on both your phone and PC\n2. Sign in with the same account on both\n3. Enable the relay switch in Remote Relay tab\n4. Use the Tailscale IP to connect from anywhere\n5. Approve new devices when prompted</string>
+
+  <string name="help_pc_scripts">PC Setup Scripts</string>
+  <string name="help_pc_scripts_content">Download auto-connect scripts for your PC. Available for Windows (PowerShell) and Linux/Mac (bash). Scripts auto-detect your device and connect automatically.</string>
+
+  <string name="help_split_tunnel">Recommended: Split Tunnel Setup</string>
+  <string name="help_split_tunnel_content">For best performance with Tailscale remote access:\n\n1. Open Tailscale app on your phone\n2. Go to Settings → Split Tunneling\n3. Enable \"Use Tailscale for specific apps\"\n4. Add only: RootADB Pro\n\nThis routes only ADB traffic through Tailscale, keeping other apps at full speed while maintaining remote ADB access.</string>
+
+  <!-- Developer info -->
+  <string name="developer_label">Developer</string>
+  <string name="developer_name">Phenix (Alaa Qweider)</string>
+  <string name="developer_email">alaa@nulled.ai</string>
+
+  <!-- Email subjects -->
+  <string name="email_subject_contact">RootADB Pro - Contact</string>
+  <string name="email_subject_bug">RootADB Pro - Bug Report</string>
+
+  <!-- Footer -->
+  <string name="footer_root_required">Requires root access</string>
 </resources>

@@ -1,26 +1,44 @@
 package com.phenix.wirelessadb
 
 import android.Manifest
-import android.content.ClipData
-import android.content.ClipboardManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
-import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.material.tabs.TabLayoutMediator
 import com.phenix.wirelessadb.databinding.ActivityMainBinding
-import kotlinx.coroutines.launch
+import com.phenix.wirelessadb.ui.MainPagerAdapter
+import com.phenix.wirelessadb.viewmodel.AdbViewModel
 
 class MainActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
-  private var isEnabled = false
+  private val viewModel: AdbViewModel by viewModels()
+
+  private val pendingAuthReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+      val clientIp = intent.getStringExtra(AdbService.EXTRA_CLIENT_IP)
+      if (clientIp != null) {
+        viewModel.setPendingApproval(clientIp)
+      }
+    }
+  }
+
+  // Network change listener - refreshes status when VPN connects/disconnects
+  private val networkChangeReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+      viewModel.refreshStatus()
+    }
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -29,28 +47,34 @@ class MainActivity : AppCompatActivity() {
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    setupEdgeToEdge()
+    setSupportActionBar(binding.toolbar)
+
     requestNotificationPermission()
-    setupViews()
-    checkRootAndRefresh()
+    setupViewPager()
+
+    LocalBroadcastManager.getInstance(this).registerReceiver(
+      pendingAuthReceiver,
+      IntentFilter(AdbService.ACTION_PENDING_AUTH)
+    )
+
+    // Register network change listener for VPN connect/disconnect
+    @Suppress("DEPRECATION")
+    registerReceiver(
+      networkChangeReceiver,
+      IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+    )
+  }
+
+  override fun onDestroy() {
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(pendingAuthReceiver)
+    unregisterReceiver(networkChangeReceiver)
+    super.onDestroy()
   }
 
   override fun onResume() {
     super.onResume()
-    refreshStatus()
-  }
-
-  private fun setupEdgeToEdge() {
-    ViewCompat.setOnApplyWindowInsetsListener(binding.rootLayout) { view, windowInsets ->
-      val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-      view.updatePadding(
-        left = insets.left + 24,
-        top = insets.top + 24,
-        right = insets.right + 24,
-        bottom = insets.bottom + 24
-      )
-      windowInsets
-    }
+    viewModel.refreshStatus()
+    viewModel.refreshTrustedCount()
   }
 
   private fun requestNotificationPermission() {
@@ -60,111 +84,27 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(
           this,
           arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-          100
+          REQUEST_NOTIFICATION_PERMISSION
         )
       }
     }
   }
 
-  private fun setupViews() {
-    binding.apply {
-      portInput.setText(PrefsManager.getPort(this@MainActivity).toString())
+  private fun setupViewPager() {
+    val adapter = MainPagerAdapter(this)
+    binding.viewPager.adapter = adapter
 
-      toggleButton.setOnClickListener {
-        toggleAdb()
+    TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+      tab.text = when (position) {
+        MainPagerAdapter.TAB_LOCAL_ADB -> getString(R.string.tab_local_adb)
+        MainPagerAdapter.TAB_REMOTE_RELAY -> getString(R.string.tab_remote_relay)
+        MainPagerAdapter.TAB_HELP -> getString(R.string.tab_help)
+        else -> null
       }
-
-      bootSwitch.isChecked = PrefsManager.isEnableOnBoot(this@MainActivity)
-      bootSwitch.setOnCheckedChangeListener { _, checked ->
-        PrefsManager.setEnableOnBoot(this@MainActivity, checked)
-      }
-
-      copyButton.setOnClickListener {
-        copyCommand()
-      }
-    }
+    }.attach()
   }
 
-  private fun checkRootAndRefresh() {
-    lifecycleScope.launch {
-      val hasRoot = AdbManager.isRootAvailable()
-      if (!hasRoot) {
-        binding.statusText.text = "Root access required"
-        binding.statusIndicator.setBackgroundResource(R.drawable.ic_status_inactive)
-        binding.toggleButton.isEnabled = false
-        Toast.makeText(this@MainActivity, "No root access", Toast.LENGTH_LONG).show()
-      } else {
-        refreshStatus()
-      }
-    }
-  }
-
-  private fun refreshStatus() {
-    lifecycleScope.launch {
-      val status = AdbManager.getStatus(this@MainActivity)
-      isEnabled = status.enabled
-
-      binding.apply {
-        if (status.enabled && status.ip != null) {
-          statusText.text = "Connected"
-          statusIndicator.setBackgroundResource(R.drawable.ic_status_active)
-          ipText.text = status.ip
-          portText.text = ":${status.port}"
-          commandText.text = "adb connect ${status.ip}:${status.port}"
-          toggleButton.text = "Disable"
-          copyButton.isEnabled = true
-        } else {
-          statusText.text = "Disabled"
-          statusIndicator.setBackgroundResource(R.drawable.ic_status_inactive)
-          ipText.text = "---.---.---.---"
-          portText.text = ":${status.port}"
-          commandText.text = "ADB not active"
-          toggleButton.text = "Enable"
-          copyButton.isEnabled = false
-        }
-      }
-    }
-  }
-
-  private fun toggleAdb() {
-    val port = binding.portInput.text.toString().toIntOrNull() ?: 5555
-
-    if (!AdbManager.validatePort(port)) {
-      Toast.makeText(this, "Port must be 1024-65535", Toast.LENGTH_SHORT).show()
-      return
-    }
-
-    PrefsManager.setPort(this, port)
-    binding.toggleButton.isEnabled = false
-
-    lifecycleScope.launch {
-      val result = if (isEnabled) {
-        AdbService.stop(this@MainActivity)
-        AdbManager.disable()
-      } else {
-        AdbManager.enable(port)
-      }
-
-      result.onSuccess {
-        if (!isEnabled) {
-          val status = AdbManager.getStatus(this@MainActivity)
-          status.ip?.let { ip ->
-            AdbService.start(this@MainActivity, ip, port)
-          }
-        }
-        refreshStatus()
-      }.onFailure { e ->
-        Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-      }
-
-      binding.toggleButton.isEnabled = true
-    }
-  }
-
-  private fun copyCommand() {
-    val command = binding.commandText.text.toString()
-    val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-    clipboard.setPrimaryClip(ClipData.newPlainText("ADB Command", command))
-    Toast.makeText(this, "Copied!", Toast.LENGTH_SHORT).show()
+  companion object {
+    private const val REQUEST_NOTIFICATION_PERMISSION = 100
   }
 }

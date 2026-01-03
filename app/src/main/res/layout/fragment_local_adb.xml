@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TAB 1: LOCAL ADB
+  ================
+  This fragment shows LOCAL NETWORK ADB connection info:
+  - WiFi IP address (e.g., 10.1.1.107)
+  - Local port (default 5555)
+  - Command: adb connect <wifi_ip>:5555
+
+  For REMOTE/TAILSCALE connections, see fragment_remote_relay.xml
+-->
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fillViewport="true">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Section Header: LOCAL NETWORK -->
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/section_local_network"
+      android:textSize="12sp"
+      android:textStyle="bold"
+      android:textColor="?colorPrimary"
+      android:letterSpacing="0.1"
+      android:layout_marginBottom="12dp" />
+
+    <!-- Status Card: Shows WiFi IP -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/statusCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:cardCornerRadius="16dp"
+      app:cardElevation="0dp"
+      app:strokeWidth="1dp"
+      app:strokeColor="?colorOutline"
+      app:cardBackgroundColor="?colorSurface">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="center_vertical">
+
+          <View
+            android:id="@+id/statusIndicator"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/ic_status_inactive" />
+
+          <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_checking"
+            android:textSize="14sp"
+            android:textColor="?colorOnSurfaceVariant"
+            android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+        <!-- WiFi IP Address (NOT Tailscale) -->
+        <TextView
+          android:id="@+id/ipText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="---.---.---.---"
+          android:textSize="28sp"
+          android:textStyle="bold"
+          android:textColor="?colorOnSurface"
+          android:fontFamily="monospace"
+          android:layout_marginTop="12dp" />
+
+        <!-- Local Port (default 5555) -->
+        <TextView
+          android:id="@+id/portText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text=":5555"
+          android:textSize="18sp"
+          android:textColor="?colorPrimary"
+          android:fontFamily="monospace" />
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Command Card: adb connect <wifi_ip>:<port> -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/commandCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      app:cardCornerRadius="12dp"
+      app:cardElevation="0dp"
+      app:cardBackgroundColor="?colorSurfaceVariant">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/local_command_label"
+          android:textSize="12sp"
+          android:textColor="?colorOnSurfaceVariant" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="4dp"
+          android:gravity="center_vertical">
+
+          <TextView
+            android:id="@+id/commandText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="adb connect ..."
+            android:textSize="13sp"
+            android:fontFamily="monospace"
+            android:textColor="?colorOnSurface" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/copyButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:icon="@drawable/ic_copy"
+            app:iconSize="20dp"
+            app:iconTint="?colorOnSecondaryContainer"
+            android:contentDescription="@string/copy_command" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Port Input -->
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/portLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:hint="@string/hint_port"
+      style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/portInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:text="5555"
+        android:maxLength="5" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Enable/Disable Button -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/toggleButton"
+      android:layout_width="match_parent"
+      android:layout_height="56dp"
+      android:layout_marginTop="16dp"
+      android:text="@string/btn_enable"
+      android:textSize="16sp"
+      app:cornerRadius="12dp" />
+
+    <!-- Enable on Boot Switch -->
+    <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/bootSwitch"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:text="@string/switch_boot"
+      android:textSize="16sp"
+      android:textColor="?colorOnSurface" />
+
+    <!-- Root Warning -->
+    <TextView
+      android:id="@+id/rootWarning"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="24dp"
+      android:text="@string/error_no_root"
+      android:textSize="14sp"
+      android:textColor="@color/error"
+      android:visibility="gone"
+      android:gravity="center" />
+
+  </LinearLayout>
+
+</ScrollView>

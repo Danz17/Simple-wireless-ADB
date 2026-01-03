@@ -1,192 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/rootLayout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:padding="24dp"
-  android:background="?android:colorBackground">
+  android:fitsSystemWindows="true">
 
-  <TextView
-    android:id="@+id/titleText"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Wireless ADB"
-    android:textSize="28sp"
-    android:textStyle="bold"
-    android:textColor="?colorOnBackground"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginTop="16dp" />
-
-  <TextView
-    android:id="@+id/subtitleText"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="by Phenix"
-    android:textSize="14sp"
-    android:textColor="?colorOnSurfaceVariant"
-    app:layout_constraintTop_toBottomOf="@id/titleText"
-    app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginTop="4dp" />
-
-  <com.google.android.material.card.MaterialCardView
-    android:id="@+id/statusCard"
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="32dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="?colorOutline"
-    app:cardBackgroundColor="?colorSurface"
-    app:layout_constraintTop_toBottomOf="@id/subtitleText">
+    android:fitsSystemWindows="true"
+    app:liftOnScroll="true">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      app:title="@string/app_name_short"
+      app:subtitle="@string/app_subtitle" />
+
+    <com.google.android.material.tabs.TabLayout
+      android:id="@+id/tabLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="24dp"
-      android:gravity="center">
+      app:tabMode="fixed"
+      app:tabGravity="fill"
+      app:tabIndicatorFullWidth="false"
+      app:tabIndicatorAnimationMode="elastic" />
 
-      <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+  </com.google.android.material.appbar.AppBarLayout>
 
-        <View
-          android:id="@+id/statusIndicator"
-          android:layout_width="12dp"
-          android:layout_height="12dp"
-          android:background="@drawable/ic_status_inactive" />
-
-        <TextView
-          android:id="@+id/statusText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Checking..."
-          android:textSize="14sp"
-          android:textColor="?colorOnSurfaceVariant"
-          android:layout_marginStart="8dp" />
-
-      </LinearLayout>
-
-      <TextView
-        android:id="@+id/ipText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="---.---.---.---"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textColor="?colorOnSurface"
-        android:fontFamily="monospace"
-        android:layout_marginTop="12dp" />
-
-      <TextView
-        android:id="@+id/portText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=":5555"
-        android:textSize="20sp"
-        android:textColor="?colorPrimary"
-        android:fontFamily="monospace" />
-
-    </LinearLayout>
-
-  </com.google.android.material.card.MaterialCardView>
-
-  <com.google.android.material.card.MaterialCardView
-    android:id="@+id/commandCard"
+  <androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/viewPager"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="0dp"
-    app:cardBackgroundColor="?colorSurfaceVariant"
-    app:layout_constraintTop_toBottomOf="@id/statusCard">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:padding="16dp"
-      android:gravity="center_vertical">
-
-      <TextView
-        android:id="@+id/commandText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="adb connect ..."
-        android:textSize="13sp"
-        android:fontFamily="monospace"
-        android:textColor="?colorOnSurface" />
-
-      <com.google.android.material.button.MaterialButton
-        android:id="@+id/copyButton"
-        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:icon="@drawable/ic_copy"
-        app:iconSize="20dp"
-        app:iconTint="?colorOnSecondaryContainer"
-        android:contentDescription="Copy command" />
-
-    </LinearLayout>
-
-  </com.google.android.material.card.MaterialCardView>
-
-  <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/portLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:hint="Port"
-    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-    app:layout_constraintTop_toBottomOf="@id/commandCard">
-
-    <com.google.android.material.textfield.TextInputEditText
-      android:id="@+id/portInput"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:inputType="number"
-      android:text="5555"
-      android:maxLength="5" />
-
-  </com.google.android.material.textfield.TextInputLayout>
-
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/toggleButton"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:layout_marginTop="16dp"
-    android:text="Enable"
-    android:textSize="16sp"
-    app:cornerRadius="12dp"
-    app:layout_constraintTop_toBottomOf="@id/portLayout" />
-
-  <com.google.android.material.materialswitch.MaterialSwitch
-    android:id="@+id/bootSwitch"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:text="Enable on boot"
-    android:textSize="16sp"
-    android:textColor="?colorOnSurface"
-    app:layout_constraintTop_toBottomOf="@id/toggleButton" />
-
-  <TextView
-    android:id="@+id/footerText"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Requires root access"
-    android:textSize="12sp"
-    android:textColor="?colorOnSurfaceVariant"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginBottom="8dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
