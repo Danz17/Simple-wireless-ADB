@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - RootADB Pro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #1976D2;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    h2 {
+      color: #333;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #1976D2;
+    }
+    p {
+      margin-bottom: 15px;
+    }
+    ul {
+      margin-left: 25px;
+      margin-bottom: 15px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    .highlight {
+      background: #E3F2FD;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #1976D2;
+      margin: 20px 0;
+    }
+    .contact {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    .contact a {
+      color: #1976D2;
+      text-decoration: none;
+    }
+    .contact a:hover {
+      text-decoration: underline;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Privacy Policy</h1>
+    <p class="subtitle">RootADB Pro | Last updated: January 3, 2025</p>
+
+    <div class="highlight">
+      <strong>Summary:</strong> RootADB Pro does NOT collect, store, or transmit any personal data. All app data is stored locally on your device only.
+    </div>
+
+    <h2>Information We Collect</h2>
+    <p><strong>We do not collect any personal information.</strong></p>
+    <p>RootADB Pro operates entirely on your device and does not:</p>
+    <ul>
+      <li>Collect personal data</li>
+      <li>Track your location</li>
+      <li>Access your contacts, photos, or files</li>
+      <li>Send any data to external servers</li>
+      <li>Use analytics or tracking services</li>
+    </ul>
+
+    <h2>Data Storage</h2>
+    <p>The app stores the following data locally on your device using Android's SharedPreferences:</p>
+    <ul>
+      <li><strong>Settings:</strong> ADB port, boot preferences, theme selection</li>
+      <li><strong>Trusted Devices:</strong> IP addresses of devices you've approved for ADB connections</li>
+      <li><strong>Warpgate Configuration:</strong> SSH tunnel settings (if configured)</li>
+    </ul>
+    <p>This data never leaves your device and is deleted when you uninstall the app.</p>
+
+    <h2>Permissions Used</h2>
+    <p>The app requires certain permissions to function:</p>
+    <ul>
+      <li><strong>INTERNET:</strong> Required for ADB connections over network</li>
+      <li><strong>ACCESS_WIFI_STATE / ACCESS_NETWORK_STATE:</strong> To detect your device's IP address</li>
+      <li><strong>RECEIVE_BOOT_COMPLETED:</strong> To enable ADB automatically on device boot (optional)</li>
+      <li><strong>FOREGROUND_SERVICE:</strong> To keep the ADB relay service running</li>
+      <li><strong>POST_NOTIFICATIONS:</strong> To show connection status in the notification bar</li>
+    </ul>
+
+    <h2>Third-Party Services</h2>
+    <p>RootADB Pro does not integrate with any third-party services, analytics, or advertising platforms.</p>
+    <p>If you use optional features like Tailscale or Warpgate, those connections are made directly to servers you configure. We have no access to these connections.</p>
+
+    <h2>P2P Token System</h2>
+    <p>The P2P Token feature generates temporary connection tokens locally on your device. These tokens:</p>
+    <ul>
+      <li>Are generated entirely on-device</li>
+      <li>Expire after 30 minutes by default</li>
+      <li>Are never transmitted to any server</li>
+      <li>Are shared only if you manually share them with another user</li>
+    </ul>
+
+    <h2>Children's Privacy</h2>
+    <p>This app is a developer tool and is not intended for children under 13. We do not knowingly collect any information from children.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date.</p>
+
+    <div class="contact">
+      <h2 style="margin-top: 0; border: none;">Contact Us</h2>
+      <p>If you have any questions about this Privacy Policy, please contact us:</p>
+      <p>
+        <strong>Developer:</strong> Phenix (Alaa Qweider)<br>
+        <strong>Email:</strong> <a href="mailto:alaa@nulled.ai">alaa@nulled.ai</a><br>
+        <strong>GitHub:</strong> <a href="https://github.com/Danz17/Simple-wireless-ADB">github.com/Danz17/Simple-wireless-ADB</a>
+      </p>
+    </div>
+
+    <div class="footer">
+      &copy; 2025 Phenix. RootADB Pro is open source software.
+    </div>
+  </div>
+</body>
+</html>
